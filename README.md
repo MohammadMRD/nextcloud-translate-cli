@@ -1,0 +1,1 @@
+# nextcloud-translate-cli
