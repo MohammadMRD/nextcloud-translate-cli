@@ -1,23 +1,16 @@
-import { spawn } from 'child_process';
+import initProgram from './init-program';
 import readPotFiles from './read-pot-files';
+import fillTranslateFile from './fill-translate-file';
 
 export function cli(args) {
-  // Fetch all strings
-  console.log('******** Create po files ********\r\n');
-  const createPotFiles = spawn('php', [`${__dirname}/translationtool.phar`, 'create-pot-files']);
+  // Init program
+  const program = initProgram(args);
 
-  createPotFiles.stdout.on('data', () => {
-    console.log('*********************************');
+  if (program.init) {
     readPotFiles();
-  });
+  }
 
-  createPotFiles.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
-    console.log('*********************************');
-  });
-
-  createPotFiles.on('error', (error) => {
-    console.log(`error: ${error.message}`);
-    console.log('*********************************');
-  });
+  if (program.fillTranslateFile) {
+    fillTranslateFile();
+  }
 }

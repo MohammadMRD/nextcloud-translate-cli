@@ -1,7 +1,29 @@
 import fs from 'fs';
+import { spawn } from 'child_process';
 import PoFile from 'pofile';
 
 export default function () {
+  // Fetch all strings
+  console.log('******** Create po files ********\r\n');
+  const createPotFiles = spawn('php', [`${__dirname}/translationtool.phar`, 'create-pot-files']);
+
+  createPotFiles.stdout.on('data', () => {
+    console.log('*********************************');
+    readPotFiles();
+  });
+
+  createPotFiles.stderr.on('data', (data) => {
+    console.log(`stderr: ${data}`);
+    console.log('*********************************');
+  });
+
+  createPotFiles.on('error', (error) => {
+    console.log(`error: ${error.message}`);
+    console.log('*********************************');
+  });
+}
+
+function readPotFiles() {
   // Read all po files
   console.log('******* Read PO files ********');
   const currentPath = process.cwd();
