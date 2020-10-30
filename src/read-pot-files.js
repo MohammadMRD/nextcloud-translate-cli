@@ -2,7 +2,7 @@ import fs from 'fs';
 import { spawn } from 'child_process';
 import PoFile from 'pofile';
 
-export default function () {
+export default function (lang) {
   // Fetch all strings
   console.log('******** Create po files ********\r\n');
   const createPotFiles = spawn('php', [`${__dirname}/translationtool.phar`, 'create-pot-files']);
@@ -19,20 +19,20 @@ export default function () {
 
   createPotFiles.on('close', (code) => {
     if (code === 0) {
-      readPotFiles();
+      readPotFiles(lang);
     }
 
     console.log('******************************');
   });
 }
 
-function readPotFiles() {
+function readPotFiles(lang) {
   // Read all po files
   console.log('******* Read PO files ********');
   const currentPath = process.cwd();
   const translationDir = `${currentPath}/translationfiles/templates/`;
   const mainTranslateFolderPath = `${currentPath}/translate/`;
-  const mainTranslateFileName = 'translate.pot';
+  const mainTranslateFileName = `${lang}.pot`;
 
   if (!fs.existsSync(mainTranslateFolderPath)) {
     fs.mkdirSync(mainTranslateFolderPath);

@@ -2,15 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import PoFile from 'pofile';
 
-export default function () {
+export default function (lang) {
   const root = process.cwd();
-  const mainTranslateFilePath = path.join(root, 'translate', 'translate.pot');
+  const mainTranslateFilePath = path.join(root, 'translate', `${lang}.pot`);
   if (!fs.existsSync(mainTranslateFilePath)) {
-    throw new Error('Could not find translate.pot file.');
+    throw new Error(`Could not find ${lang}.pot file.`);
   }
 
   console.log('******************************');
-  console.log('Opening translate.po file');
+  console.log(`Opening ${lang}.pot file`);
   PoFile.load(mainTranslateFilePath, (err, translatePoFile) => {
     if (err) throw new Error(err);
 
@@ -21,41 +21,38 @@ export default function () {
       .filter((dir) => dir.isDirectory())
       .forEach((dir) => directories.push(path.join('apps', dir.name)));
 
-    // Read translated files and fill translate.pot file
-
     // Copy strings
     console.log('Copying strings');
     directories.forEach((dir) => {
-      const translatedFile = path.join(root, dir, 'l10n', 'fa.json');
+      const translatedFile = path.join(root, dir, 'l10n', `${lang}.json`);
 
       if (fs.existsSync(translatedFile)) {
-        const faFile = fs.readFileSync(translatedFile);
-        const { translations } = JSON.parse(faFile);
+        const tFile = fs.readFileSync(translatedFile);
+        const { translations } = JSON.parse(tFile);
 
         if (!translations) return;
 
         Object.keys(translations).forEach((key) => {
-          const faKey = String(key).normalize();
-          const faValue = String(translations[faKey]).normalize();
+          const tKey = String(key).normalize();
+          const tValue = String(translations[tKey]).normalize();
 
           const tIndex = translatePoFile.items.findIndex(
             ({ msgid, msgid_plural, msgstr }) =>
-              [msgid.normalize(), String(msgid_plural || '').normalize()].includes(faKey) &&
-              !msgstr.find((str) => str.normalize() === faValue)
+              [msgid.normalize(), String(msgid_plural || '').normalize()].includes(tKey) &&
+              !msgstr.find((str) => str.normalize() === tValue)
           );
 
           if (tIndex >= 0) {
             const { msgid, msgid_plural } = translatePoFile.items[tIndex];
-            const strIndex =
-              msgid.normalize() === faKey ? 0 : msgid_plural && msgid_plural.normalize() === faKey ? 1 : 0;
+            const strIndex = msgid.normalize() === tKey ? 0 : msgid_plural && msgid_plural.normalize() === tKey ? 1 : 0;
 
-            translatePoFile.items[tIndex].msgstr[strIndex] = faValue;
+            translatePoFile.items[tIndex].msgstr[strIndex] = tValue;
           }
         });
       }
     });
 
-    console.log('Saving translate.po file');
+    console.log(`Saving ${lang}.pot file`);
     translatePoFile.save(mainTranslateFilePath, (err) => {
       if (err) throw new Error(err);
 

@@ -3,7 +3,7 @@ import path from 'path';
 import PoFile from 'pofile';
 import { spawn } from 'child_process';
 
-export default function () {
+export default function (lang) {
   console.log('******************************');
   console.log('Create pot files');
 
@@ -19,27 +19,27 @@ export default function () {
 
   createPotFiles.on('close', (code) => {
     if (code == 0) {
-      translateProject();
+      translateProject(lang);
     }
 
     console.log('******************************');
   });
 }
 
-function translateProject() {
+function translateProject(lang) {
   const root = process.cwd();
-  const mainTranslateFilePath = path.join(root, 'translate', 'translate.pot');
+  const mainTranslateFilePath = path.join(root, 'translate', `${lang}.pot`);
   const translationDir = path.join(root, 'translationfiles', 'templates');
 
   if (!fs.existsSync(mainTranslateFilePath)) {
-    throw new Error('Could not find translate.pot file.');
+    throw new Error(`Could not find ${lang}.pot file.`);
   }
 
   if (!fs.existsSync(translationDir)) {
     throw new Error('Could not find translation folder. (translationfiles/template)');
   }
 
-  console.log('Opening translate.po file');
+  console.log(`Opening ${lang}.pot file`);
   PoFile.load(mainTranslateFilePath, (err, translatePoFile) => {
     if (err) throw new Error(err);
 
@@ -74,7 +74,7 @@ function translateProject() {
             appPath = path.join(root, 'apps', fileNameWithoutExt);
           }
 
-          const destPath = path.join(appPath, 'translationfiles', 'fa');
+          const destPath = path.join(appPath, 'translationfiles', lang);
           if (!fs.existsSync(path.join(destPath))) {
             fs.mkdirSync(destPath, { recursive: true });
           }

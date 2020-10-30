@@ -8,10 +8,10 @@ export function cli(args) {
   const program = initProgram(args);
 
   if (program.init) {
-    readPotFiles();
+    readPotFiles(program.lang);
   } else if (program.fillTranslateFile) {
-    fillTranslateFile();
+    fillTranslateFile(program.lang);
   } else if (program.translate) {
-    translateProject();
+    translateProject(program.lang);
   }
 }
