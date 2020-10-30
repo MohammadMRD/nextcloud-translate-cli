@@ -7,11 +7,6 @@ export default function () {
   console.log('******** Create po files ********\r\n');
   const createPotFiles = spawn('php', [`${__dirname}/translationtool.phar`, 'create-pot-files']);
 
-  createPotFiles.stdout.on('data', () => {
-    console.log('*********************************');
-    readPotFiles();
-  });
-
   createPotFiles.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`);
     console.log('*********************************');
@@ -20,6 +15,14 @@ export default function () {
   createPotFiles.on('error', (error) => {
     console.log(`error: ${error.message}`);
     console.log('*********************************');
+  });
+
+  createPotFiles.on('close', (code) => {
+    if (code === 0) {
+      readPotFiles();
+    }
+
+    console.log('******************************');
   });
 }
 
@@ -53,10 +56,10 @@ function readPotFiles() {
         return;
       }
 
+      // TODO: Log errorFiles
       const errorFiles = [];
 
       filenames.forEach((filename) => {
-        // if (filename !== 'accessibility.pot') return;
         console.log(`**** Reading ${filename}`);
 
         PoFile.load(`${translationDir}${filename}`, (err, poFile) => {

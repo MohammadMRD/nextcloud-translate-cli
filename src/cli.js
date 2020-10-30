@@ -1,6 +1,7 @@
 import initProgram from './init-program';
 import readPotFiles from './read-pot-files';
 import fillTranslateFile from './fill-translate-file';
+import translateProject from './translate-project';
 
 export function cli(args) {
   // Init program
@@ -8,9 +9,9 @@ export function cli(args) {
 
   if (program.init) {
     readPotFiles();
-  }
-
-  if (program.fillTranslateFile) {
+  } else if (program.fillTranslateFile) {
     fillTranslateFile();
+  } else if (program.translate) {
+    translateProject();
   }
 }
