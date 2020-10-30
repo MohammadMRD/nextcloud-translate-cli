@@ -7,7 +7,8 @@
   "license": "MIT",
   "main": "./bin/index.js",
   "bin": {
-    "nc-translate": "./bin/index.js"
+    "nc-translate": "./bin/index.js",
+    "nct": "./bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
