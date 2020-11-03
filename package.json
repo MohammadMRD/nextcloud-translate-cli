@@ -1,14 +1,14 @@
 {
   "name": "nextcloud-translate-cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "This is a simple cli for translate all strings in the nextcloud project in a single file",
   "homepage": "https://github.com/MohammadMRD/nextcloud-translate-cli#readme",
   "author": "Mohammad Moradi <MohammadMRD@hotmail.com>",
   "license": "MIT",
-  "main": "./bin/index.js",
+  "main": "./bin/nct.js",
   "bin": {
-    "nc-translate": "./bin/index.js",
-    "nct": "./bin/index.js"
+    "nc-translate": "./bin/nct.js",
+    "nct": "./bin/nct.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
