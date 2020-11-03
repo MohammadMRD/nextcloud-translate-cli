@@ -5,10 +5,10 @@
   "homepage": "https://github.com/MohammadMRD/nextcloud-translate-cli#readme",
   "author": "Mohammad Moradi <MohammadMRD@hotmail.com>",
   "license": "MIT",
-  "main": "./bin/index.js",
+  "main": "./bin/nct.js",
   "bin": {
-    "nc-translate": "./bin/index.js",
-    "nct": "./bin/index.js"
+    "nc-translate": "./bin/nct.js",
+    "nct": "./bin/nct.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
