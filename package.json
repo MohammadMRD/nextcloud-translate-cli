@@ -1,6 +1,6 @@
 {
   "name": "nextcloud-translate-cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "This is a simple cli for translate all strings in the nextcloud project in a single file",
   "homepage": "https://github.com/MohammadMRD/nextcloud-translate-cli#readme",
   "author": "Mohammad Moradi <MohammadMRD@hotmail.com>",
